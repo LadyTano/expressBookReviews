@@ -6,8 +6,17 @@ const public_users = express.Router();
 
 
 public_users.post("/register", (req,res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    let username = req.body.username;
+    let password = req.body.password;
+    if(username != null && password != null)
+    {
+    users.push({"username":req.query.username, "password":req.query.password});
+    res.send("The user" + (' ')+ (username) + " Has been added!")
+    }
+    else
+    {
+        res.send("Username and Password cannot be blank")
+    }
 });
 
 // Get the book list available in the shop
