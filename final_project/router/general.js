@@ -8,10 +8,17 @@ const public_users = express.Router();
 public_users.post("/register", (req,res) => {
     let username = req.body.username;
     let password = req.body.password;
-    if(username != null && password != null)
-    {
-    users.push({"username":req.query.username, "password":req.query.password});
-    res.send("The user" + (' ')+ (username) + " Has been added!")
+    if(username != null && password != null )
+     {
+    if(isValid(username)){
+       res.send("Username must be unique!")
+    }
+    if(!isValid(username)){
+        users.push({"username":req.body.username, "password":req.body.password});
+        res.send("The user" + (' ')+ (username) + " Has been added!")
+        console.info(users);
+    }
+     
     }
     else
     {
