@@ -1,9 +1,8 @@
 const express = require('express');
-let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
-
+//const axios = require('axios').default;
 
 public_users.post("/register", (req,res) => {
     let username = req.body.username;
@@ -26,27 +25,40 @@ public_users.post("/register", (req,res) => {
     }
 });
 
+//function to get the booksdb
+
+async function getBooks()
+{
+    let books = require("./booksdb.js");
+    return books;
+};
+
+
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
+public_users.get('/', async function (req, res) {
+    let books =  await getBooks();
     res.send(JSON.stringify(books,null,4));
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
+public_users.get('/isbn/:isbn', async function (req, res) {
   const isbn = req.params.isbn;
+  let books =  await getBooks();
   res.send(books[isbn]);
  });
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
+public_users.get('/author/:author', async function (req, res) {
   const author = req.params.author;
+  let books =  await getBooks();
     let filtered_books = Object.filter((books) => books.author === author);
     res.send(filtered_books);
 });
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
+public_users.get('/title/:title',async function (req, res) {
     const isbn = req.params.isbn;
+    let books =  await getBooks();
     let filtered_books = Object.filter((review) => books.title === title);
     res.send(filtered_books);
 });
